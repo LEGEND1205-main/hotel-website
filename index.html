@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hotel Make | Luxury Redefined</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              gold: {
+                400: '#D4AF37',
+                500: '#C5A028',
+                600: '#B8860B',
+              },
+            },
+            animation: {
+              'slow-zoom': 'slow-zoom 20s infinite alternate',
+            },
+            keyframes: {
+              'slow-zoom': {
+                '0%': { transform: 'scale(1)' },
+                '100%': { transform: 'scale(1.1)' },
+              }
+            }
+          }
+        }
+      }
+    </script>
+  </head>
+  <body class="bg-slate-900">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
