@@ -1,6 +1,7 @@
 import React from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
+import Accommodations from './components/Accommodations';
 import HotelMenu from './components/HotelMenu';
 import Booking from './components/Booking';
 
@@ -10,6 +11,7 @@ function App() {
       <Navbar />
       <main>
         <Hero />
+        <Accommodations />
         <HotelMenu />
         <Booking />
 
