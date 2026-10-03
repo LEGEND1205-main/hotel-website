@@ -2,6 +2,7 @@ import React from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Accommodations from './components/Accommodations';
+import Experience from './components/Experience';
 import HotelMenu from './components/HotelMenu';
 import Booking from './components/Booking';
 
@@ -12,6 +13,7 @@ function App() {
       <main>
         <Hero />
         <Accommodations />
+        <Experience />
         <HotelMenu />
         <Booking />
 
