@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ChevronDown, Bed, Utensils, MapPin, Phone, Mail, Star } from 'lucide-react';
+import AuthModal from './AuthModal';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState(null);
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
 
   const menuItems = {
     "Accommodations": [
@@ -25,95 +27,111 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="fixed w-full z-50 bg-slate-900/90 backdrop-blur-md text-white border-b border-gold-500/30">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="text-2xl font-serif font-bold tracking-tighter text-gold-400"
-        >
-          HOTEL <span className="text-white">MAKE</span>
-        </motion.div>
-
-        {/* Desktop Menu */}
-        <div className="hidden md:flex space-x-8 items-center">
-          {Object.keys(menuItems).map((item) => (
-            <div
-              key={item}
-              className="relative group"
-              onMouseEnter={() => setActiveMenu(item)}
-              onMouseLeave={() => setActiveMenu(null)}
-            >
-              <button className="flex items-center gap-1 hover:text-gold-400 transition-colors py-2">
-                {item} <ChevronDown size={16} />
-              </button>
-
-              <AnimatePresence>
-                {activeMenu === item && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    className="absolute top-full left-0 w-64 bg-slate-800 border border-gold-500/20 shadow-2xl p-4 rounded-b-lg"
-                  >
-                    {menuItems[item].map((sub) => (
-                      <a
-                        key={sub.name}
-                        href={sub.link}
-                        className="block p-3 hover:bg-slate-700 rounded transition-colors group/sub"
-                      >
-                        <div className="font-medium text-gold-400 group-hover/sub:text-white">{sub.name}</div>
-                        <div className="text-xs text-slate-400">{sub.desc}</div>
-                      </a>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          ))}
-          <button className="bg-gold-600 hover:bg-gold-500 text-slate-900 px-6 py-2 rounded-full font-bold transition-all transform hover:scale-105">
-            Book Now
-          </button>
-        </div>
-
-        {/* Mobile Toggle */}
-        <div className="md:hidden">
-          <button onClick={() => setIsOpen(!isOpen)} className="p-2">
-            {isOpen ? <X /> : <Menu />}
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Menu Overlay */}
-      <AnimatePresence>
-        {isOpen && (
+    <>
+      <nav className="fixed w-full z-50 bg-slate-900/90 backdrop-blur-md text-white border-b border-gold-500/30">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <motion.div
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            className="fixed inset-0 bg-slate-900 z-40 md:hidden p-6"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="text-2xl font-serif font-bold tracking-tighter text-gold-400"
           >
-            <div className="flex flex-col space-y-6 mt-12">
-              {Object.entries(menuItems).map(([category, items]) => (
-                <div key={category} className="border-b border-slate-700 pb-4">
-                  <h3 className="text-gold-400 font-bold mb-4 text-xl">{category}</h3>
-                  <div className="grid grid-cols-1 gap-4">
-                    {items.map(item => (
-                      <a key={item.name} href={item.link} className="text-slate-300 text-lg" onClick={() => setIsOpen(false)}>
-                        {item.name}
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              ))}
-              <button className="bg-gold-600 text-slate-900 p-4 rounded-xl font-bold text-xl">
-                Book Your Stay
-              </button>
-            </div>
+            HOTEL <span className="text-white">MAKE</span>
           </motion.div>
-        )}
-      </AnimatePresence>
-    </nav>
+
+          {/* Desktop Menu */}
+          <div className="hidden md:flex space-x-8 items-center">
+            {Object.keys(menuItems).map((item) => (
+              <div
+                key={item}
+                className="relative group"
+                onMouseEnter={() => setActiveMenu(item)}
+                onMouseLeave={() => setActiveMenu(null)}
+              >
+                <button className="flex items-center gap-1 hover:text-gold-400 transition-colors py-2">
+                  {item} <ChevronDown size={16} />
+                </button>
+
+                <AnimatePresence>
+                  {activeMenu === item && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      className="absolute top-full left-0 w-64 bg-slate-800 border border-gold-500/20 shadow-2xl p-4 rounded-b-lg"
+                    >
+                      {menuItems[item].map((sub) => (
+                        <a
+                          key={sub.name}
+                          href={sub.link}
+                          className="block p-3 hover:bg-slate-700 rounded transition-colors group/sub"
+                        >
+                          <div className="font-medium text-gold-400 group-hover/sub:text-white">{sub.name}</div>
+                          <div className="text-xs text-slate-400">{sub.desc}</div>
+                        </a>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ))}
+            <button
+              onClick={() => setIsAuthOpen(true)}
+              className="px-6 py-2 rounded-full font-bold transition-all border border-gold-500/50 text-gold-400 hover:bg-gold-500 hover:text-slate-900"
+            >
+              Member Login
+            </button>
+            <button className="bg-gold-600 hover:bg-gold-500 text-slate-900 px-6 py-2 rounded-full font-bold transition-all transform hover:scale-105">
+              Book Now
+            </button>
+          </div>
+
+          {/* Mobile Toggle */}
+          <div className="md:hidden">
+            <button onClick={() => setIsOpen(!isOpen)} className="p-2">
+              {isOpen ? <X /> : <Menu />}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu Overlay */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              className="fixed inset-0 bg-slate-900 z-40 md:hidden p-6"
+            >
+              <div className="flex flex-col space-y-6 mt-12">
+                {Object.entries(menuItems).map(([category, items]) => (
+                  <div key={category} className="border-b border-slate-700 pb-4">
+                    <h3 className="text-gold-400 font-bold mb-4 text-xl">{category}</h3>
+                    <div className="grid grid-cols-1 gap-4">
+                      {items.map(item => (
+                        <a key={item.name} href={item.link} className="text-slate-300 text-lg" onClick={() => setIsOpen(false)}>
+                          {item.name}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+                <button
+                  onClick={() => { setIsAuthOpen(true); setIsOpen(false); }}
+                  className="bg-slate-800 text-gold-400 p-4 rounded-xl font-bold text-xl border border-gold-500/30"
+                >
+                  Member Login
+                </button>
+                <button className="bg-gold-600 text-slate-900 p-4 rounded-xl font-bold text-xl">
+                  Book Your Stay
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </nav>
+
+      <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
+    </>
   );
 };
 
